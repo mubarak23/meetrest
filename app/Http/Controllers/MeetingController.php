@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 
 class MeetingController extends Controller
 {
+    public function __construct(){
+        //setup middleware here
+    }
     /**
      * Display a listing of the resource.
      *
@@ -14,6 +17,7 @@ class MeetingController extends Controller
     public function index()
     {
         //
+        return 'it is working';
     }
 
     /**
@@ -35,6 +39,7 @@ class MeetingController extends Controller
     public function store(Request $request)
     {
         //
+        return 'it is working';
     }
 
     /**

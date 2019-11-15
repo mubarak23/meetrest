@@ -35,6 +35,7 @@ class RegistrationController extends Controller
     public function store(Request $request)
     {
         //
+        return 'it is working';
     }
 
     /**
@@ -80,5 +81,6 @@ class RegistrationController extends Controller
     public function destroy($id)
     {
         //
+        return 'it is working';
     }
 }
