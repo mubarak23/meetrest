@@ -51,6 +51,7 @@ class MeetingController extends Controller
     public function show($id)
     {
         //
+        return 'it is working'. $id;
     }
 
     /**
@@ -62,6 +63,7 @@ class MeetingController extends Controller
     public function edit($id)
     {
         //
+
     }
 
     /**
