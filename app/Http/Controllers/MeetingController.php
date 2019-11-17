@@ -17,18 +17,24 @@ class MeetingController extends Controller
     public function index()
     {
         //
-        return 'it is working';
+        $meeting = [
+            'title' => 'title',
+            'description' => 'description',
+            'time' => 'time',
+            'user_id' => 'user_id',
+            'view_meeting' => [
+                'href' => 'api/v1/meeting/1',
+                'method' => 'GET'
+            ]
+        ];
+        $response = [
+            'message' => 'Meeting created successfully',
+            'meeting' => $meeting
+        ];
+        return response()->json($response, 201);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+
 
     /**
      * Store a newly created resource in storage.
@@ -40,10 +46,27 @@ class MeetingController extends Controller
     {
         //
         $title = $request->input('title');
-        $description = $requst->input('description');
+        $description = $request->input('description');
         $time = $request->input('time');
         $user_id = $request->input('user_id');
-        return 'it is working';
+
+        $meeting = [
+            'title' => $title,
+            'description' => $description,
+            'time' => $time,
+            'user_id' => $user_id,
+            'view_meeting' => [
+                'href' => 'api/v1/meeting/1',
+                'method' => 'GET'
+            ]
+        ];
+        $response = [
+            'message' => 'Meeting created successfully',
+            'meeting' => $meeting
+        ];
+        return response()->json($response, 201);
+
+        //return 'it is working';
     }
 
     /**
@@ -58,17 +81,6 @@ class MeetingController extends Controller
         return 'it is working'. $id;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-
-    }
 
     /**
      * Update the specified resource in storage.
@@ -96,5 +108,15 @@ class MeetingController extends Controller
     public function destroy($id)
     {
         //
+        $response = [
+            'message' => 'Meeting deleted',
+            'create' => [
+                'href' =>'aip/v1/meeting',
+                'method' => 'POST',
+                'params' => 'title, description, time'
+            ]
+            ];
+            return response()->json($response, 200);
+
     }
 }
