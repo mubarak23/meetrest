@@ -35,6 +35,8 @@ class RegistrationController extends Controller
     public function store(Request $request)
     {
         //
+        $meeting_id = $request->intput('meeting_id');
+        $user_id = $request->input('user_id');
         return 'it is working';
     }
 
