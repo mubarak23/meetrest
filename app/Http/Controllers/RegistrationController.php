@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use APP\Meeting;
 use App\User;
+use App\Meeting;
 
 class RegistrationController extends Controller
 {
@@ -42,26 +42,13 @@ class RegistrationController extends Controller
             'user_id' => 'required'
         ]);
 
-        $meeting_id = $request->intput('meeting_id');
+        $meeting_id = $request->input('meeting_id');
         $user_id = $request->input('user_id');
         $meeting = Meeting::findOrFail($meeting_id);
         $user = User::findOrFail($user_id);
 
-        $meeting = [
-            'title' => 'title',
-            'description' => 'description',
-            'time' => 'time',
-            'view_meeting' => [
-                'href' => 'api/v1/meeting/1',
-                'method' => 'GET'
-            ]
-        ];
-        $user = [
-            'name' => 'name'
-        ];
-
         $message = [
-            'message' => 'user resgistered for a meeting',
+            'message' => 'User is Already Resgistered for a meeting',
             'meeting' => $meeting,
             'user' => $user,
             'unregister' => [
@@ -69,7 +56,22 @@ class RegistrationController extends Controller
                 'method' => 'DELETE'
             ]
         ];
-        
+        if($meeting->users()->where('user_id', $user->id)->first()){
+            return response()->json($message, 404);
+             }
+
+        $user->meetings()->attach($meeting);
+        //$meeting->users()->attach($user_id);
+        $response = [
+            'message' => 'User is Already Resgistered for a meeting',
+            'meeting' => $meeting,
+            'user' => $user,
+            'unregister' => [
+                'href' => 'api/v1/meeting/registration/' . $meeting->id,
+                'method' => 'DELETE'
+                ]
+            ];
+
         return response()->json($response, 201);
 
         //return 'it is working';
