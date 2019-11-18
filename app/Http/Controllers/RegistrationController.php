@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use APP\Meeting;
+use App\User;
 
 class RegistrationController extends Controller
 {
@@ -39,9 +41,12 @@ class RegistrationController extends Controller
             'meeting_id' => 'required',
             'user_id' => 'required'
         ]);
-        
+
         $meeting_id = $request->intput('meeting_id');
         $user_id = $request->input('user_id');
+        $meeting = Meeting::findOrFail($meeting_id);
+        $user = User::findOrFail($user_id);
+
         $meeting = [
             'title' => 'title',
             'description' => 'description',
@@ -55,15 +60,16 @@ class RegistrationController extends Controller
             'name' => 'name'
         ];
 
-        $response = [
+        $message = [
             'message' => 'user resgistered for a meeting',
             'meeting' => $meeting,
             'user' => $user,
             'unregister' => [
-                'href' => 'api/v1/meeting/registration/1',
+                'href' => 'api/v1/meeting/registration/' . $meeting->id,
                 'method' => 'DELETE'
             ]
         ];
+        
         return response()->json($response, 201);
 
         //return 'it is working';
