@@ -119,31 +119,19 @@ class RegistrationController extends Controller
      */
     public function destroy($id)
     {
-        //
-        //return 'it is working';
-        $meeting = [
-            'title' => 'title',
-            'description' => 'description',
-            'time' => 'time',
-            'view_meeting' => [
-                'href' => 'api/v1/meeting/1',
-                'method' => 'GET'
-            ]
-        ];
-        $user = [
-            'name' => 'name'
-        ];
+        $meeting = Meeting::findOrFail($id);
+        $meeting->users()->detach();
 
         $response = [
-            'message' => 'user resgistered for a meeting',
+            'message' => 'user Unresgistered for a meeting',
             'meeting' => $meeting,
-            'user' => $user,
+            'user' => 'tdb',
             'unregister' => [
                 'href' => 'api/v1/meeting/registration/1',
                 'method' => 'POST',
                 'param' => 'user_id, meeting_id'
             ]
         ];
-        return response()->json($response, 201);
+        return response()->json($response, 200);
     }
 }
