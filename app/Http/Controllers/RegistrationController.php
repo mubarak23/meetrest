@@ -5,9 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\Meeting;
-
+use JWTAuth;
 class RegistrationController extends Controller
 {
+    public function __construct(){
+        //setup middleware here
+        $this->middleware('jwt.auth');
+    }
+    ()
     /**
      * Display a listing of the resource.
      *

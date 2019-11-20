@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Meeting;
 use carbon\carbon;
+use JWTAuth;
 
 class MeetingController extends Controller
 {
@@ -51,14 +52,17 @@ class MeetingController extends Controller
         $this->validate($request, [
             'title' => 'required',
             'description' => 'required',
-            'time' => 'required|date_format:d/m/Y',
-            'user_id' => 'required'
+            'time' => 'required|date_format:d/m/Y'
         ]);
+
+        if(!$user = JWTAuth::parseToken()->authenticate()){
+            return response()->json(['message' => 'User Not Found'], 404);
+        }
 
         $title = $request->input('title');
         $description = $request->input('description');
         $time = $request->input('time');
-        $user_id = $request->input('user_id');
+        $user_id = $user->id;
 
         $meeting = new Meeting([
             'title' => $title,
@@ -124,16 +128,18 @@ class MeetingController extends Controller
         $this->validate($request, [
             'title' => 'required',
             'description' => 'required',
-            'time' => 'required|date_format:d/m/Y',
-            'user_id' => 'required'
+            'time' => 'required|date_format:d/m/Y'
         ]);
+        if(!$user = JWTAuth::parseToken()->authenticate()){
+            return response()->json(["message" => "User Not Found"], 404);
+        }
         $title = $request->input('title');
         $description = $request->input('description');
         $time = $request->input('time');
-        $user_id = $request->input('user_id');
+        $user_id = $user->id;
 
         $meeting = Meeting::with('users')->findOrFail($id);
-        if(!$meeting->users()->where('user_id', $user_id)->first()) {
+        if(!$meeting->users()->where('users.id', $user_id)->first()) {
             return response()->json([
                 'message' => 'User not register for the meeting, update'
             ], 401);
@@ -169,6 +175,14 @@ class MeetingController extends Controller
     {
         //
         $meeting = Meeting::findOrFail($id);
+        if(!$user = JWTAuth::parseToken()->authenticate()){
+            return response()->json(["message" => "User Not Found"], 404);
+        }
+        if(!$meeting->users()->where('uses.id', $user->id)->first()) {
+            return response()->json([
+                'message' => 'User not register for the meeting, update'
+            ], 401);
+        }
         $users = $meeting->users;
         $meeting->users()->detach();
         if(!$meeting->delete()){
