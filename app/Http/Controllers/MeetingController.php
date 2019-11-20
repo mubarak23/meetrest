@@ -49,6 +49,8 @@ class MeetingController extends Controller
     public function store(Request $request)
     {
         //
+      //  return Request::header('Authorization');
+
         $this->validate($request, [
             'title' => 'required',
             'description' => 'required',

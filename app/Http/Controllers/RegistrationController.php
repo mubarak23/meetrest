@@ -125,12 +125,22 @@ class RegistrationController extends Controller
     public function destroy($id)
     {
         $meeting = Meeting::findOrFail($id);
-        $meeting->users()->detach();
+        //$meeting->users()->detach();
+        if(!$user = JWTAuth::parseToken()->authenticate()){
+            return response()->json(["message" => "User Not Found"], 404);
+        }
+        if(!$meeting->users()->where('uses.id', $user->id)->first()) {
+            return response()->json([
+                'message' => 'User not register for the meeting, Delete Operation is not successful'
+            ], 401);
+        }
+
+        $meeting->users()->detach($user->id);
 
         $response = [
             'message' => 'user Unresgistered for a meeting',
             'meeting' => $meeting,
-            'user' => 'tdb',
+            'user' => $user->id,
             'unregister' => [
                 'href' => 'api/v1/meeting/registration/1',
                 'method' => 'POST',
