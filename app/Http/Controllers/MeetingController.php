@@ -10,6 +10,9 @@ class MeetingController extends Controller
 {
     public function __construct(){
         //setup middleware here
+        $this->middleware('jwt.auth', ['only' => [
+            'update', 'store', 'destroy'
+        ]]);
     }
     /**
      * Display a listing of the resource.
