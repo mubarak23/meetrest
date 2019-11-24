@@ -12,7 +12,7 @@ class RegistrationController extends Controller
         //setup middleware here
         $this->middleware('jwt.auth');
     }
-    ()
+    
     /**
      * Display a listing of the resource.
      *
@@ -129,7 +129,7 @@ class RegistrationController extends Controller
         if(!$user = JWTAuth::parseToken()->authenticate()){
             return response()->json(["message" => "User Not Found"], 404);
         }
-        if(!$meeting->users()->where('uses.id', $user->id)->first()) {
+        if(!$meeting->users()->where('users.id', $user->id)->first()) {
             return response()->json([
                 'message' => 'User not register for the meeting, Delete Operation is not successful'
             ], 401);
