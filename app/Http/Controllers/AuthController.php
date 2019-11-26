@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\User;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use Illuminate\Support\Facades\Auth;
 use JWTAuth;
 //header("Access-Control-Allow-Origin: *");
 class AuthController extends Controller
@@ -67,10 +68,21 @@ class AuthController extends Controller
             "message" => "Could not create Token"
         ], 500);
        }
+       $token = $this->respondWithToken($token);
        return response()->json([
            "Token" => $token
        ], 200);
 
     }
+
+    protected function respondWithToken($token)
+    {
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => 20160
+        ]);
+    }
+    
 
 }
