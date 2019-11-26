@@ -7,6 +7,7 @@ use App\Http\Requests;
 use App\User;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use JWTAuth;
+//header("Access-Control-Allow-Origin: *");
 class AuthController extends Controller
 {
     //
