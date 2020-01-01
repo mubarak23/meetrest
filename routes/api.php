@@ -46,7 +46,11 @@ Route::group(['prefix' => '/v1/'], function() {
     ]);
 });
 
-
+Route::fallback(function(){
+    return response()->json([
+        'message' => 'Page Not Found'
+    ], 404);
+});
 
 
 

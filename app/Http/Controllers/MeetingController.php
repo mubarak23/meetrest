@@ -23,8 +23,9 @@ class MeetingController extends Controller
     public function index()
     {
         //
+        try{
 
-        $meeting = Meeting::all();
+            $meeting = Meeting::all();
         foreach($meetings as $meeting){
             $meeting->view_meeting = [
                 'href' => 'api/v1/meeting/' . $meeting->id,
@@ -36,6 +37,15 @@ class MeetingController extends Controller
             'meeting' => $meetings
         ];
         return response()->json($response, 200);
+
+        }
+        catch(ModelNotFoundException $ex){
+            \abort(422, 'Invaid Request');
+        }
+        catch(Exception $e){
+            \abort(500, 'Could not Fetch Meeting details');
+        }
+        
     }
 
 
@@ -103,7 +113,8 @@ class MeetingController extends Controller
     public function show($id)
     {
         //
-        $meeting = Meeting::with('users')->where('id', $id)->firstOrFail();
+        try{
+            $meeting = Meeting::with('users')->where('id', $id)->firstOrFail();
         $meeting->view_meeting = [
             'href' => 'api/v1/meeting',
             'meeting' => 'GET'
@@ -113,6 +124,12 @@ class MeetingController extends Controller
             'meeting' => $meeting
         ];
         return response()->json($response, 200);
+        }catch(ModelNotFoundException $ex){
+            \abort(402, 'Invalid Meeting Id Provided');
+        }catch(Exception $e){  
+            \abort(500, 'Could not Fetch Meeting infor');
+        }
+        
 
     }
 

@@ -68,7 +68,7 @@ class AuthController extends Controller
             "message" => "Could not create Token"
         ], 500);
        }
-       $token = $this->respondWithToken($token);
+       
        return response()->json([
            "Token" => $token
        ], 200);
