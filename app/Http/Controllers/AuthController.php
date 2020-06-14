@@ -42,7 +42,7 @@ class AuthController extends Controller
         };
 
         $response = [
-            'message' => 'AN Error occur'
+            'error' => 'AN Error occur'
         ];
 
         return  response()->json($response, 401);
@@ -55,7 +55,8 @@ class AuthController extends Controller
         ]);
         //$email = $request->input('email');
         //$password = $request->input('password');
-         $credentials = $request->only('email', 'password');   
+         $credentials = $request->only('email', 'password');
+         $user = User::where('email', $request->input('email'))->first();   
        try {
             if(! $token = JWTAuth::attempt($credentials)){
                 return response()->json([
@@ -70,7 +71,8 @@ class AuthController extends Controller
        }
        
        return response()->json([
-           "Token" => $token
+           "Token" => $token,
+           "user" => $user
        ], 200);
 
     }
